@@ -3,6 +3,10 @@ from os import environ as env
 from sanic import Sanic
 from sanic.response import text
 
+import psycopg2
+
+conn=psycopg2.connect(f"dbname={env['POSTGRES_DB} user={env['POSTGRES_PASSWORD']}")
+
 app = Sanic("endpoint")
 
 @app.get("/")
