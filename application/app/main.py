@@ -28,14 +28,15 @@ with psycopg2.connect(db_config) as connection:
 
 @app.post("/")
 def index(request):
+    message = request.body.decode()
+    logger.info(f"Incoming data: {message}")
     with psycopg2.connect(db_config) as connection:
         with connection.cursor() as cursor:
-            logger.info(request.body)
-            cursor.execute("INSERT INTO post_data (data) VALUES (%s);", (request.body.decode(),))
+            cursor.execute("INSERT INTO post_data (data) VALUES (%s);", (message,))
     return text(
         f"Connected to {request.url_for('index')}\n"
         f"{env['POSTGRES_PASSWORD']} {env['POSTGRES_USER']} \n"
     )
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, workers=8, access_log=True)
+    app.run(host='0.0.0.0', port=8000, workers=8, access_log=False)
