@@ -1,21 +1,23 @@
 version: "3.3"
 
 services:
+  postgres:
+    image: postgres
+    env_file:
+      - .env
 
   application:
     build:
       context: ./application
     env_file:
       - .env
-
-  postgres:
-    build:
-      context: ./postgres
-    env_file:
-      - .env
+    depends_on:
+      - "postgres"
 
   nginx:
     build:
       context: ./nginx
     ports: 
      - "${NGINX_OUTER_PORT}:80"
+    depends_on:
+      - "application"

@@ -1,7 +1,7 @@
 FROM python:latest
-RUN apt update
+RUN apt-get update
 COPY packages.txt /packages.txt
-RUN apt install -y $(cat packages.txt | tr '\n' ' ')
+RUN apt-get install -y $(cat packages.txt | tr '\n' ' ')
 COPY requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 COPY ./app /app
